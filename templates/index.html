@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h2>探索自然的奥秘</h2>
+        <p>我们致力于将复杂的科学知识转化为大众易懂的语言，让更多人了解自然、热爱自然、保护自然。</p>
+        <a href="{{ url_for('main.events') }}" class="btn">了解我们的宣讲活动</a>
+    </div>
+</section>
+
+<section id="about" class="section">
+    <div class="container">
+        <h2 class="section-title">关于我们</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>"自然之友"科普宣讲团队成立于2015年，由一群热爱自然、热衷科普的青年科学家和教育工作者组成。我们致力于将专业的自然科学知识转化为大众易于理解的内容，通过生动有趣的宣讲活动，激发公众特别是青少年对自然科学的兴趣。</p>
+                <p>我们的宣讲内容涵盖生态保护、生物多样性、气候变化、地质科学等多个领域，已为100+所学校、社区和企事业单位提供科普服务，累计受众超过50,000人次。</p>
+                <a href="{{ url_for('main.about') }}" class="btn">了解更多</a>
+            </div>
+            <div class="about-image">
+                <img src="{{ url_for('static', filename='images/about.jpg') }}" alt="团队户外科普活动">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="events" class="section bg-light">
+    <div class="container">
+        <h2 class="section-title">近期活动</h2>
+        <div class="events-grid">
+            {% for event in upcoming_events %}
+            <div class="event-card">
+                <div class="event-image">
+                    <img src="{{ event.image or url_for('static', filename='images/event-default.jpg') }}" alt="{{ event.title }}">
+                </div>
+                <div class="event-details">
+                    <h3>{{ event.title }}</h3>
+                    <p class="event-date">
+                        <i class="far fa-calendar-alt"></i> 
+                        {{ event.start_time.strftime('%Y年%m月%d日') }}
+                    </p>
+                    <p class="event-location">
+                        <i class="fas fa-map-marker-alt"></i> {{ event.location }}
+                    </p>
+                    <a href="{{ url_for('main.event_detail', event_id=event.id) }}" class="btn btn-small">详情</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center">
+            <a href="{{ url_for('main.events') }}" class="btn">查看所有活动</a>
+        </div>
+    </div>
+</section>
+
+<section id="team" class="section">
+    <div class="container">
+        <h2 class="section-title">团队成员</h2>
+        <div class="team-grid">
+            {% for member in team_members[:4] %}
+            <div class="team-member">
+                <img src="{{ member.image or url_for('static', filename='images/member-default.jpg') }}" alt="{{ member.name }}">
+                <h3>{{ member.name }}</h3>
+                <p class="title">{{ member.position }}</p>
+                <p>{{ member.bio|truncate(100) }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center">
+            <a href="{{ url_for('main.team') }}" class="btn">认识整个团队</a>
+        </div>
+    </div>
+</section>
+
+<section id="gallery" class="section bg-light">
+    <div class="container">
+        <h2 class="section-title">科普图库</h2>
+        <div class="gallery-grid">
+            {% for image in gallery_images[:6] %}
+            <div class="gallery-item">
+                <img src="{{ url_for('static', filename=image.image_path) }}" alt="{{ image.title }}">
+                <div class="gallery-caption">{{ image.title }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center">
+            <a href="{{ url_for('main.gallery') }}" class="btn">浏览更多图片</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
